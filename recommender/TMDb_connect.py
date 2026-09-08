@@ -1,7 +1,13 @@
 import requests
 import streamlit as st
+import os
+from dotenv import load_dotenv
 
-API_KEY = "5d13e375e7a6142f1c5a4e870217bd22"
+load_dotenv()
+
+API_KEY = os.getenv("TMDB_API_KEY")
+
+
 BASE_URL = "https://api.themoviedb.org/3"
 
 def clean_title(title):
