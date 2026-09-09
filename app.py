@@ -4,10 +4,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent
+DATA_DIR = PROJECT_ROOT / "data"
 from recommender.Itembase_CF import predict, train_data, item_similarity
-
 from recommender.TMDb_connect import get_movie_info
-
 # ------------------------------------------------------------
 # Streamlit Page Setup
 # ------------------------------------------------------------
@@ -26,7 +27,7 @@ All powered by **Item-Based Collaborative Filtering** and enriched with **TMDb m
 # Load Movie Data
 # ------------------------------------------------------------
 movies = pd.read_csv(
-    "D:/Final_project/Smartflix/data/u.item",
+    DATA_DIR / "u.item",
     sep="|",
     header=None,
     encoding="latin-1",
@@ -41,7 +42,13 @@ st.sidebar.header(" SmartFlix Controls")
 
 # --- User ID Recommendation Section ---
 st.sidebar.subheader("👤 Recommend by User ID")
-user_id = st.sidebar.number_input("Enter User ID (0–942):", min_value=0, max_value=942, value=10)
+user_id = st.number_input(
+    "Enter User ID",
+    min_value=1,
+    max_value=943,
+    value=1,
+    step=1
+)
 top_n_user = st.sidebar.slider("Number of Recommendations (User):", 1, 10, 5)
 k_user = st.sidebar.slider("Neighbors (k) for User:", 10, 100, 50, step=10)
 user_button = st.sidebar.button("🎥 Recommend for User")
@@ -93,7 +100,7 @@ def get_recommendations_by_title(movie_title, top_n=5):
 # ------------------------------------------------------------
 if user_button:
     st.subheader(f"🎞️ Top {top_n_user} Recommendations for User {user_id}")
-    top_movies = get_recommendations_by_user(user_id, k_user, top_n_user)
+    top_movies = get_recommendations_by_user(user_id - 1, k_user, top_n_user)
 
     for movie_id, rating in top_movies:
         title = movies[movies["MovieID"] == movie_id + 1]["Title"].values[0]
