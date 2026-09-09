@@ -37,21 +37,16 @@ SmartFlix/
 ├── app.py
 ├── requirements.txt
 └── README.md
-
+```
 ## How to Run
 
 Install the required dependencies:
-
+```bash
 pip install -r requirements.txt
-
-Create a .env file in the project root and add:
-
-TMDB_API_KEY=your_api_key_here
-
+```
 ## Run the application:
-
+```Bash
 streamlit run app.py
-
+```
 ## Author
-
 Roqia Alirezaei
