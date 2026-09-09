@@ -9,6 +9,10 @@ import numpy as np
 from scipy import sparse
 import matplotlib.pyplot as plt
 from .TMDb_connect import get_movie_info
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
 
 
 # ------------------------------------------------------------
@@ -18,7 +22,7 @@ num_users = 943
 num_items = 1682
 
 # Training set
-df_train = pd.read_csv("D:/Final_project/Smartflix/data/u1.base", sep="\t",
+df_train = pd.read_csv(DATA_DIR / "u1.base", sep="\t",
                        names=['UserID', 'MovieID', 'Rating', 'Timestamp'])
 values = df_train.values
 values[:, 0:2] -= 1
@@ -26,7 +30,7 @@ train_data = sparse.csr_matrix((values[:, 2], (values[:, 0], values[:, 1])),
                                shape=(num_users, num_items), dtype=np.float64)
 
 # Test set
-df_test = pd.read_csv("D:/Final_project/Smartflix/data/u1.test", sep="\t",
+df_test = pd.read_csv(DATA_DIR / "u1.test", sep="\t",
                       names=['UserID', 'MovieID', 'Rating', 'Timestamp'])
 values = df_test.values
 values[:, 0:2] -= 1
@@ -34,7 +38,7 @@ test_data = sparse.csr_matrix((values[:, 2], (values[:, 0], values[:, 1])),
                               shape=(num_users, num_items), dtype=np.float64)
 
 # Movie titles
-movies = pd.read_csv("D:/Final_project/Smartflix/data/u.item", sep="|",
+movies = pd.read_csv(DATA_DIR / "u.item", sep="|",
                      names=range(24), encoding="latin-1", usecols=[0, 1])
 movies.columns = ['MovieID', 'Title']
 movie_dict = dict(zip(movies['MovieID'] - 1, movies['Title']))
